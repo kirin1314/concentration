@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+
 permissions:
   contents: read
 
@@ -25,18 +26,18 @@ jobs:
           gradle-version: "8.9"
 
       - name: Install Android SDK packages
-  shell: bash
-  run: |
-    SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+        shell: bash
+        run: |
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
 
-    if [ ! -f "$SDKMANAGER" ]; then
-      SDKMANAGER=$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | head -n 1)
-    fi
+          if [ ! -f "$SDKMANAGER" ]; then
+            SDKMANAGER=$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | head -n 1)
+          fi
 
-    echo "Using sdkmanager: $SDKMANAGER"
+          echo "Using sdkmanager: $SDKMANAGER"
 
-    yes | "$SDKMANAGER" --licenses >/dev/null || true
-    "$SDKMANAGER" "platforms;android-35" "build-tools;35.0.0"
+          yes | "$SDKMANAGER" --licenses >/dev/null || true
+          "$SDKMANAGER" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Restore app source
         shell: bash
