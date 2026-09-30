@@ -2,9 +2,6 @@ name: Build Android APK
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - ".github/workflows/build-apk.yml"
 
 permissions:
   contents: read
@@ -25,18 +22,19 @@ jobs:
         with:
           gradle-version: "8.9"
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install Android 35 SDK
+      - name: Install Android SDK packages
         shell: bash
         run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+          which sdkmanager
           yes | sdkmanager --licenses >/dev/null || true
           sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
       - name: Restore app source
         shell: bash
         run: |
+          unzip -q "RandomFocusAndroid_v2_完整安卓工程.zip" -d project
 
       - name: Build debug APK
         shell: bash
